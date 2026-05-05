@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alex Morgan — Software Engineer & AI Builder</title>
+<meta name="description" content="Software engineer building at the intersection of enterprise systems and modern AI. C#, React, Azure AI, and local LLM infrastructure.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   CSS VARIABLES & RESET
+   ============================================ */
+:root {
+  --bg-primary: #0a0a0b;
+  --bg-secondary: #111113;
+  --bg-card: #161618;
+  --bg-card-hover: #1c1c1f;
+  --border: #232326;
+  --border-subtle: #1a1a1d;
+  --text-primary: #ececef;
+  --text-secondary: #8a8a8f;
+  --text-tertiary: #5a5a5f;
+  --accent: #4f8ff7;
+  --accent-dim: rgba(79,143,247,0.12);
+  --accent-glow: rgba(79,143,247,0.25);
+  --accent-secondary: #38c97a;
+  --accent-secondary-dim: rgba(56,201,122,0.12);
+  --accent-warm: #f59e42;
+  --accent-warm-dim: rgba(245,158,66,0.12);
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --max-width: 1200px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* ============================================
+   NOISE TEXTURE OVERLAY
+   ============================================ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 2rem;
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  background: rgba(10,10,11,0.8);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: var(--transition);
+}
+
+nav .nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+nav .logo {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+nav .logo span { color: var(--text-tertiary); }
+
+nav .nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+nav .nav-links a {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color var(--transition);
+  position: relative;
+}
+
+nav .nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width var(--transition);
+}
+
+nav .nav-links a:hover { color: var(--text-primary); }
+nav .nav-links a:hover::after { width: 100%; }
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+  background: none;
+  border: none;
+}
+
+.hamburger span {
+  width: 22px;
+  height: 1.5px;
+  background: var(--text-secondary);
+  transition: var(--transition);
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 8rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  left: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(56,201,122,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.hero-text .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-text h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+.hero-text h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-text .subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 480px;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--transition);
+  letter-spacing: 0.02em;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #3a7de6;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 30px var(--accent-glow);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.btn-secondary:hover {
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+/* Hero visual — terminal card */
+.hero-visual {
+  position: relative;
+}
+
+.terminal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 18px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.terminal-dot:nth-child(1) { background: #ff5f57; }
+.terminal-dot:nth-child(2) { background: #febc2e; }
+.terminal-dot:nth-child(3) { background: #28c840; }
+
+.terminal-title {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+}
+
+.terminal-body {
+  padding: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.9;
+}
+
+.terminal-body .line { margin-bottom: 0.25rem; }
+.terminal-body .prompt { color: var(--accent-secondary); }
+.terminal-body .cmd { color: var(--text-primary); }
+.terminal-body .output { color: var(--text-secondary); }
+.terminal-body .comment { color: var(--text-tertiary); }
+.terminal-body .highlight { color: var(--accent-warm); }
+.terminal-body .string { color: var(--accent); }
+
+.cursor-blink {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background: var(--accent);
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Floating badge */
+.floating-badge {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  animation: float 3s ease-in-out infinite;
+}
+
+.floating-badge .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-secondary);
+  box-shadow: 0 0 8px var(--accent-secondary);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ============================================
+   SECTION SHARED STYLES
+   ============================================ */
+section {
+  padding: 7rem 2rem;
+  position: relative;
+}
+
+.section-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-label::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 400;
+  margin-bottom: 1rem;
+  line-height: 1.15;
+}
+
+.section-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  max-width: 560px;
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 3.5rem;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+/* ============================================
+   ABOUT SECTION
+   ============================================ */
+#about { background: var(--bg-secondary); }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.about-text p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+  font-weight: 300;
+}
+
+.about-text strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  transition: all var(--transition);
+}
+
+.stat-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.stat-number {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+/* ============================================
+   SKILLS SECTION
+   ============================================ */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.skill-group {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  transition: all var(--transition);
+}
+
+.skill-group:hover {
+  border-color: var(--border);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+
+.skill-group-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  font-size: 1.2rem;
+}
+
+.skill-group-icon.blue  { background: var(--accent-dim); color: var(--accent); }
+.skill-group-icon.green { background: var(--accent-secondary-dim); color: var(--accent-secondary); }
+.skill-group-icon.warm  { background: var(--accent-warm-dim); color: var(--accent-warm); }
+
+.skill-group h3 {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 100px;
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+
+.skill-group:hover .skill-tag {
+  border-color: var(--border);
+}
+
+/* ============================================
+   CERTIFICATIONS
+   ============================================ */
+#certifications { background: var(--bg-secondary); }
+
+.cert-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cert-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.75rem;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--transition);
+}
+
+.cert-item:hover {
+  border-color: var(--accent);
+  transform: translateX(4px);
+}
+
+.cert-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.cert-badge.azure { background: var(--accent-dim); color: var(--accent); }
+.cert-badge.aws   { background: var(--accent-warm-dim); color: var(--accent-warm); }
+.cert-badge.gcp   { background: var(--accent-secondary-dim); color: var(--accent-secondary); }
+
+.cert-info h3 {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.cert-info p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+.cert-status {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 100px;
+}
+
+.cert-status.earned {
+  background: var(--accent-secondary-dim);
+  color: var(--accent-secondary);
+}
+
+.cert-status.in-progress {
+  background: var(--accent-warm-dim);
+  color: var(--accent-warm);
+}
+
+.cert-status.planned {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   PROJECTS
+   ============================================ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.project-card:hover {
+  border-color: var(--border);
+  background: var(--bg-card-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 50px rgba(0,0,0,0.25);
+}
+
+.project-card:hover::before { opacity: 1; }
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.project-header h3 {
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.project-links {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.project-links a {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  transition: color var(--transition);
+  padding: 0.25rem;
+}
+
+.project-links a:hover { color: var(--accent); }
+
+.project-card p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.project-tech span {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  padding: 0.3rem 0.65rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 100px;
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   DGX SPARK LAB
+   ============================================ */
+#lab { background: var(--bg-secondary); }
+
+.lab-showcase {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.lab-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.spec-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.spec-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+}
+
+.spec-item .spec-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.spec-item .spec-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.lab-description h3 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.lab-description p {
+  color: var(--text-secondary);
+  font-weight: 300;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.lab-use-cases {
+  list-style: none;
+  margin-top: 1.5rem;
+}
+
+.lab-use-cases li {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 300;
+}
+
+.lab-use-cases li::before {
+  content: '→';
+  color: var(--accent-secondary);
+  font-family: var(--font-mono);
+}
+
+/* ============================================
+   BLOG / WRITING
+   ============================================ */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.blog-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  transition: all var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+
+.blog-date {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  margin-bottom: 0.75rem;
+}
+
+.blog-card h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.blog-card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  line-height: 1.7;
+  flex: 1;
+}
+
+.blog-tag {
+  margin-top: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+}
+
+/* ============================================
+   CONTACT / FOOTER
+   ============================================ */
+#contact {
+  background: var(--bg-secondary);
+  text-align: center;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+}
+
+.contact-link:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.contact-link .link-icon {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+footer {
+  padding: 2.5rem 2rem;
+  border-top: 1px solid var(--border-subtle);
+  text-align: center;
+}
+
+footer p {
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  font-weight: 300;
+}
+
+/* ============================================
+   SCROLL ANIMATIONS
+   ============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children */
+.stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.stagger.visible > *:nth-child(1) { transition-delay: 0s; }
+.stagger.visible > *:nth-child(2) { transition-delay: 0.08s; }
+.stagger.visible > *:nth-child(3) { transition-delay: 0.16s; }
+.stagger.visible > *:nth-child(4) { transition-delay: 0.24s; }
+.stagger.visible > *:nth-child(5) { transition-delay: 0.32s; }
+.stagger.visible > *:nth-child(6) { transition-delay: 0.4s; }
+
+.stagger.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .hero-visual { order: -1; }
+  .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .skills-grid { grid-template-columns: 1fr 1fr; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .lab-showcase { grid-template-columns: 1fr; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .cert-item { grid-template-columns: auto 1fr; }
+  .cert-status { grid-column: 2; }
+}
+
+@media (max-width: 640px) {
+  section { padding: 4rem 1.25rem; }
+  nav { padding: 0 1.25rem; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .stat-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    gap: 1rem;
+  }
+  .hero { min-height: auto; padding: 7rem 1.25rem 3rem; }
+  .hero-cta { flex-direction: column; }
+  .btn { justify-content: center; }
+  .floating-badge { display: none; }
+  .spec-row { grid-template-columns: 1fr; }
+  .contact-links { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================================ NAV ================================ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">alex<span>.morgan</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#lab">Lab</a></li>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ================================ HERO ================================ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="eyebrow">Software Engineer &times; AI Builder</div>
+      <h1>Building the bridge between <em>enterprise systems</em> and modern AI</h1>
+      <p class="subtitle">Full-stack engineer with deep roots in C#, .NET, and React — now engineering intelligent systems with LLMs, RAG pipelines, and local GPU infrastructure.</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View Projects ↓</a>
+        <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="floating-badge">
+        <span class="dot"></span>
+        <span>DGX Spark Online</span>
+      </div>
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <div class="terminal-dot"></div>
+          <div class="terminal-dot"></div>
+          <div class="terminal-dot"></div>
+          <div class="terminal-title">~/ai-lab</div>
+        </div>
+        <div class="terminal-body">
+          <div class="line"><span class="prompt">❯</span> <span class="cmd">ollama run llama3</span></div>
+          <div class="line"><span class="output">pulling model... ✓</span></div>
+          <div class="line"><span class="output">loading weights on DGX Spark...</span></div>
+          <div class="line"><span class="output">ready. inference at </span><span class="highlight">127 tok/s</span></div>
+          <div class="line">&nbsp;</div>
+          <div class="line"><span class="comment">// RAG pipeline active</span></div>
+          <div class="line"><span class="prompt">❯</span> <span class="cmd">dotnet run</span> <span class="string">--project AgentOrchestrator</span></div>
+          <div class="line"><span class="output">agents initialized: [planner, coder, reviewer]</span></div>
+          <div class="line"><span class="output">workflow status: </span><span class="highlight">operational</span></div>
+          <div class="line"><span class="prompt">❯</span> <span class="cursor-blink"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ================================ ABOUT ================================ -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="section-label">About</div>
+        <h2 class="section-title">Engineer first.<br>AI-obsessed second.</h2>
+        <p>I've spent years building production systems — <strong>C# APIs, SQL Server architectures, React frontends</strong> — for enterprises that need reliability at scale. That foundation matters more than ever as AI moves from demos to production.</p>
+        <p>Now I'm channeling that engineering discipline into the AI space: building <strong>RAG applications</strong>, experimenting with <strong>multi-agent workflows</strong>, fine-tuning open models on my own <strong>NVIDIA DGX Spark</strong>, and earning certifications that validate real capability.</p>
+        <p>I believe the engineers who will thrive in the AI era aren't those starting from scratch — they're the ones who understand how to ship, scale, and maintain real systems, and are now learning to infuse them with intelligence.</p>
+      </div>
+      <div class="stat-grid reveal">
+        <div class="stat-card">
+          <div class="stat-number">8+</div>
+          <div class="stat-label">Years in Production Software</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">AI-102</div>
+          <div class="stat-label">Azure AI Certified</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">DGX</div>
+          <div class="stat-label">Local GPU Infrastructure</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">3</div>
+          <div class="stat-label">Open-Source AI Projects</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ================================ SKILLS ================================ -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Expertise</div>
+      <h2 class="section-title">Full stack meets intelligent systems</h2>
+      <p class="section-subtitle">A production engineering foundation with a growing AI and ML layer on top.</p>
+    </div>
+    <div class="skills-grid stagger">
+      <div class="skill-group">
+        <div class="skill-group-icon blue">⚙</div>
+        <h3>Backend & Data</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">C# / .NET</span>
+          <span class="skill-tag">ASP.NET Core</span>
+          <span class="skill-tag">T-SQL</span>
+          <span class="skill-tag">SQL Server</span>
+          <span class="skill-tag">Entity Framework</span>
+          <span class="skill-tag">REST APIs</span>
+          <span class="skill-tag">Azure Functions</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-icon green">◧</div>
+        <h3>Frontend & UI</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">TypeScript</span>
+          <span class="skill-tag">HTML / CSS</span>
+          <span class="skill-tag">jQuery</span>
+          <span class="skill-tag">Tailwind</span>
+          <span class="skill-tag">Responsive Design</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-icon warm">◈</div>
+        <h3>AI & ML</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Azure AI Services</span>
+          <span class="skill-tag">LLM Integration</span>
+          <span class="skill-tag">RAG Pipelines</span>
+          <span class="skill-tag">Prompt Engineering</span>
+          <span class="skill-tag">LangChain</span>
+          <span class="skill-tag">Ollama</span>
+          <span class="skill-tag">Local Inference</span>
+          <span class="skill-tag">Agent Workflows</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-icon blue">☁</div>
+        <h3>Cloud & DevOps</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Azure</span>
+          <span class="skill-tag">Cloudflare</span>
+          <span class="skill-tag">CI/CD</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">GitHub Actions</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-icon green">⊞</div>
+        <h3>Data & Analytics</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">SQL Performance</span>
+          <span class="skill-tag">ETL Pipelines</span>
+          <span class="skill-tag">Data Modeling</span>
+          <span class="skill-tag">SSRS / SSIS</span>
+          <span class="skill-tag">Power BI</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-icon warm">⬡</div>
+        <h3>Infrastructure</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">NVIDIA DGX Spark</span>
+          <span class="skill-tag">Linux</span>
+          <span class="skill-tag">GPU Computing</span>
+          <span class="skill-tag">vLLM</span>
+          <span class="skill-tag">TensorRT-LLM</span>
+          <span class="skill-tag">Model Serving</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ================================ CERTIFICATIONS ================================ -->
+<section id="certifications">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Certifications</div>
+      <h2 class="section-title">Validated expertise</h2>
+      <p class="section-subtitle">Strategic certifications that demonstrate depth, not just awareness.</p>
+    </div>
+    <div class="cert-timeline stagger">
+      <div class="cert-item">
+        <div class="cert-badge azure">AI<br>900</div>
+        <div class="cert-info">
+          <h3>Azure AI Fundamentals</h3>
+          <p>Microsoft Certified — Foundation in AI concepts, Azure ML, computer vision, and NLP services</p>
+        </div>
+        <span class="cert-status earned">✓ Earned</span>
+      </div>
+      <div class="cert-item">
+        <div class="cert-badge azure">AI<br>102</div>
+        <div class="cert-info">
+          <h3>Azure AI Engineer Associate</h3>
+          <p>Hands-on implementation of Azure Cognitive Services, AI solutions, and knowledge mining</p>
+        </div>
+        <span class="cert-status in-progress">In Progress</span>
+      </div>
+      <div class="cert-item">
+        <div class="cert-badge azure">DP<br>100</div>
+        <div class="cert-info">
+          <h3>Azure Data Scientist Associate</h3>
+          <p>ML model training, evaluation, and deployment using Azure Machine Learning</p>
+        </div>
+        <span class="cert-status planned">Planned</span>
+      </div>
+      <div class="cert-item">
+        <div class="cert-badge aws">AWS<br>ML</div>
+        <div class="cert-info">
+          <h3>AWS Machine Learning Specialty</h3>
+          <p>Cross-cloud ML expertise — data engineering, modeling, and deployment on AWS</p>
+        </div>
+        <span class="cert-status planned">Planned</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ================================ PROJECTS ================================ -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Projects</div>
+      <h2 class="section-title">Built to learn. Shipped to prove it.</h2>
+      <p class="section-subtitle">Each project solves a real problem and demonstrates a production-ready approach to modern AI engineering.</p>
+    </div>
+    <div class="projects-grid stagger">
+      <div class="project-card">
+        <div class="project-header">
+          <h3>📄 DocQuery RAG</h3>
+          <div class="project-links">
+            <a href="#" title="GitHub">GitHub ↗</a>
+            <a href="#" title="Live Demo">Demo ↗</a>
+          </div>
+        </div>
+        <p>Retrieval-augmented generation app that lets users ask natural language questions over technical documentation. Built with C# backend, React frontend, and local embeddings on DGX Spark.</p>
+        <div class="project-tech">
+          <span>C#</span>
+          <span>React</span>
+          <span>LangChain</span>
+          <span>ChromaDB</span>
+          <span>Ollama</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-header">
+          <h3>🤖 AgentForge</h3>
+          <div class="project-links">
+            <a href="#" title="GitHub">GitHub ↗</a>
+          </div>
+        </div>
+        <p>Multi-agent orchestration framework where specialized agents (planner, coder, reviewer) collaborate to solve complex tasks. Uses LangGraph for workflow management with .NET integration.</p>
+        <div class="project-tech">
+          <span>.NET 8</span>
+          <span>LangGraph</span>
+          <span>Llama 3</span>
+          <span>DGX Spark</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-header">
+          <h3>🔧 MCP Toolkit</h3>
+          <div class="project-links">
+            <a href="#" title="GitHub">GitHub ↗</a>
+          </div>
+        </div>
+        <p>Custom Model Context Protocol server that exposes SQL Server databases and internal tools to LLM-powered applications. Enables AI agents to safely query and manipulate enterprise data.</p>
+        <div class="project-tech">
+          <span>C#</span>
+          <span>MCP</span>
+          <span>SQL Server</span>
+          <span>Azure</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-header">
+          <h3>⚡ SparkBench</h3>
+          <div class="project-links">
+            <a href="#" title="GitHub">GitHub ↗</a>
+            <a href="#" title="Blog Post">Write-up ↗</a>
+          </div>
+        </div>
+        <p>Comprehensive benchmarking suite for local LLM inference on NVIDIA DGX Spark. Tests throughput, latency, and memory usage across quantization levels and model families.</p>
+        <div class="project-tech">
+          <span>Python</span>
+          <span>vLLM</span>
+          <span>TensorRT-LLM</span>
+          <span>CUDA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ================================ LAB ================================ -->
+<section id="lab">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">The Lab</div>
+      <h2 class="section-title">Local AI infrastructure</h2>
+      <p class="section-subtitle">Running production-grade AI workloads on personal hardware — no cloud dependency.</p>
+    </div>
+    <div class="lab-showcase reveal">
+      <div class="lab-specs">
+        <div class="spec-row">
+          <div class="spec-item">
+            <div class="spec-label">Platform</div>
+            <div class="spec-value">NVIDIA DGX Spark</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">GPU Memory</div>
+            <div class="spec-value">128 GB Unified</div>
+          </div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-item">
+            <div class="spec-label">Inference Stack</div>
+            <div class="spec-value">Ollama + vLLM</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Models Running</div>
+            <div class="spec-value">Llama 3, Mistral, Phi</div>
+          </div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-item">
+            <div class="spec-label">Status</div>
+            <div class="spec-value" style="color: var(--accent-secondary);">● Online</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Uptime</div>
+            <div class="spec-value">99.7%</div>
+          </div>
+        </div>
+      </div>
+      <div class="lab-description">
+        <h3>Why local?</h3>
+        <p>Running AI workloads locally means zero API costs for experimentation, full data privacy, and the ability to iterate on model behavior without rate limits or usage caps.</p>
+        <p>The DGX Spark's unified memory architecture lets me load models that would require multiple consumer GPUs — giving me a genuine edge for fine-tuning and benchmarking work.</p>
+        <ul class="lab-use-cases">
+          <li>Local LLM inference and benchmarking</li>
+          <li>Fine-tuning open models on domain data</li>
+          <li>Multi-agent workflow development</li>
+          <li>RAG pipeline prototyping</li>
+          <li>Model quantization experiments</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ================================ WRITING ================================ -->
+<section id="writing">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Writing</div>
+      <h2 class="section-title">Learning in public</h2>
+      <p class="section-subtitle">Notes, tutorials, and honest reflections from the journey into AI engineering.</p>
+    </div>
+    <div class="blog-grid stagger">
+      <a href="#" class="blog-card">
+        <div class="blog-date">2025 · 8 min read</div>
+        <h3>I Set Up a DGX Spark as My AI Dev Box — Here's What I Learned</h3>
+        <p>A practical walkthrough of setting up local LLM infrastructure, the gotchas nobody tells you about, and why I stopped paying for cloud inference.</p>
+        <div class="blog-tag">Infrastructure</div>
+      </a>
+      <a href="#" class="blog-card">
+        <div class="blog-date">2025 · 6 min read</div>
+        <h3>Building a RAG App with C# and Local Embeddings</h3>
+        <p>Most RAG tutorials assume Python. Here's how I built a production-quality retrieval pipeline using .NET, Semantic Kernel, and locally-hosted models.</p>
+        <div class="blog-tag">Tutorial</div>
+      </a>
+      <a href="#" class="blog-card">
+        <div class="blog-date">2025 · 5 min read</div>
+        <h3>What Passing AI-900 Actually Taught Me (And What It Didn't)</h3>
+        <p>A candid look at Azure's AI fundamentals cert — what's valuable, what's marketing, and the study approach that worked for me.</p>
+        <div class="blog-tag">Certifications</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ================================ CONTACT ================================ -->
+<section id="contact">
+  <div class="section-inner reveal">
+    <div class="section-label" style="justify-content: center;">Connect</div>
+    <h2 class="section-title">Let's build something</h2>
+    <p class="section-subtitle" style="margin-left: auto; margin-right: auto; text-align: center;">Open to full-time roles, contract work, and interesting AI collaborations.</p>
+    <div class="contact-links">
+      <a href="mailto:alex@alexmorgan.dev" class="contact-link">
+        <span class="link-icon">@</span> Email
+      </a>
+      <a href="#" class="contact-link">
+        <span class="link-icon">gh</span> GitHub
+      </a>
+      <a href="#" class="contact-link">
+        <span class="link-icon">in</span> LinkedIn
+      </a>
+      <a href="#" class="contact-link">
+        <span class="link-icon">cv</span> Resume
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================================ FOOTER ================================ -->
+<footer>
+  <p>Built with AI assistance · Deployed on Cloudflare · © 2025 Alex Morgan</p>
+</footer>
+
+<!-- ================================ SCRIPTS ================================ -->
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .stagger').forEach(el => observer.observe(el));
+
+// Mobile nav
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+
+hamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+});
+
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => navLinks.classList.remove('open'));
+});
+
+// Nav background on scroll
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    nav.style.borderBottomColor = 'var(--border)';
+  } else {
+    nav.style.borderBottomColor = 'var(--border-subtle)';
+  }
+});
+</script>
+</body>
+</html>
